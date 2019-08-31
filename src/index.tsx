@@ -2,32 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { JSWFWindow, WindowState, WindowStyle, WindowInfo } from "@jswf/react";
 
-// function App() {
-//   const frame = React.createRef<JSWFWindow>();
-//   return (
-//     <>
-//       <JSWFWindow>
-//         ウインドウ1の内容
-//         <JSWFWindow title="子ウインドウ" overlapped={false} x={10} y={20}>
-//           ウインドウ1の子ウインドウの内容
-//           <br />
-//           <button
-//             onClick={() => {
-//               frame.current!.foreground();
-//               frame.current!.setWindowState(WindowState.NORMAL);
-//             }}
-//           >
-//             ウインドウ2を状態を元に戻す
-//           </button>
-//         </JSWFWindow>
-//       </JSWFWindow>
-//       <JSWFWindow ref={frame} title="ウインドウ2">
-//         デフォルトでセンタリング
-//       </JSWFWindow>
-//     </>
-//   );
-// }
-
 function App() {
   const frame = React.createRef<JSWFWindow>();
   const [info, setInfo] = React.useState<WindowInfo | null>(null);
