@@ -1,11 +1,13 @@
 # @jswf/react
 
-React用仮想Windowコンポーネント
+
+Virtual window component for React
 
 ## １．内容
 
-Reactで仮想ウインドウを実現するためのコンポーネント
-JSWFWindowで囲むだけで、そこが仮想ウインドウ化します
+
+Components for realizing virtual windows with React
+Just enclose with JSWindow and it will become a virtual window
 
 ## ２．Screen Shot
 
