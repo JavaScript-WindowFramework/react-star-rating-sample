@@ -1,16 +1,25 @@
 import React, { ReactElement, useEffect } from "react";
 import * as ReactDOM from "react-dom";
-import { JSWindow, ListView, ListHeaders, ListRow, ListHeader, ListItem } from "@jswf/react";
+import {
+  JSWindow,
+  ListView,
+  ListHeaders,
+  ListRow,
+  ListHeader,
+  ListItem
+} from "@jswf/react";
 import { SimpleWindow } from "./Samples/SimpleWindow";
 import { BasicWindow } from "./Samples/BasicWindow";
 import { SplitBar } from "./Samples/SplitBar";
 import { ListViewTest } from "./Samples/ListViewTest";
 import { TreeViewTest } from "./Samples/TreeViewTest";
+import { ChildWindow } from "./Samples/ChildWindow";
 
 let key = 0;
 const Compornents: [() => JSX.Element, string, string][] = [
   [SimpleWindow, "SimpleWindow", "Simple Window usage"],
   [BasicWindow, "BasicWindow", "Basic Parameter Window usage"],
+  [ChildWindow, "ChildWindow", "Child Window usage"],
   [SplitBar, "SplitBar", "SplitBar usage"],
   [ListViewTest, "ListViewTest", "ListView usage"],
   [TreeViewTest, "TreeViewTest", "TreeView usage"]
