@@ -8,21 +8,27 @@ import {
   ListHeader,
   ListItem
 } from "@jswf/react";
-import { SimpleWindow } from "./Samples/SimpleWindow";
-import { BasicWindow } from "./Samples/BasicWindow";
-import { SplitBar } from "./Samples/SplitBar";
-import { ListViewTest } from "./Samples/ListViewTest";
-import { TreeViewTest } from "./Samples/TreeViewTest";
-import { ChildWindow } from "./Samples/ChildWindow";
+import { WindowSimple } from "./Samples/WindowSimple";
+import { WindowBasic } from "./Samples/WindowBasic";
+import { WindowChild } from "./Samples/WindowChild";
+import { SplitViewBasic } from "./Samples/SplitViewBasic";
+import { ListViewBasic } from "./Samples/ListViewBasic";
+import { TreeViewBasic } from "./Samples/TreeViewBasic";
+import { SplitViewSimple } from "./Samples/SplitViewSimple";
+import { TreeViewSimple } from "./Samples/TreeViewSimple";
+import { ListViewSimple } from "./Samples/ListViewSimple";
 
 let key = 0;
 const Compornents: [() => JSX.Element, string, string][] = [
-  [SimpleWindow, "SimpleWindow", "Simple Window usage"],
-  [BasicWindow, "BasicWindow", "Basic Parameter Window usage"],
-  [ChildWindow, "ChildWindow", "Child Window usage"],
-  [SplitBar, "SplitBar", "SplitBar usage"],
-  [ListViewTest, "ListViewTest", "ListView usage"],
-  [TreeViewTest, "TreeViewTest", "TreeView usage"]
+  [WindowSimple, "WindowSimple", "Simple Window usage"],
+  [WindowBasic, "WindowBasic", "Basic Parameter Window usage"],
+  [WindowChild, "WindowChild", "Child Window usage"],
+  [SplitViewSimple, "SplitViewSimple", "Simple SplitBar usage"],
+  [SplitViewBasic, "SplitViewBasic", "SplitBar usage"],
+  [ListViewSimple, "ListViewSimple", "Simple ListView usage"],
+  [ListViewBasic, "ListViewBasic", "ListView usage"],
+  [TreeViewSimple, "TreeViewSimple", "Simple TreeView usage"],
+  [TreeViewBasic, "TreeViewBasic", "Basic TreeView usage"]
 ];
 function CompornentList() {
   let count = 0;
