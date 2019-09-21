@@ -1,88 +1,64 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { useState } from "react";
 import * as ReactDOM from "react-dom";
-import {
-  JSWindow,
-  ListView,
-  ListHeaders,
-  ListRow,
-  ListHeader,
-  ListItem
-} from "@jswf/react";
-import { WindowSimple } from "./Samples/WindowSimple";
-import { WindowBasic } from "./Samples/WindowBasic";
-import { WindowChild } from "./Samples/WindowChild";
-import { SplitViewBasic } from "./Samples/SplitViewBasic";
-import { ListViewBasic } from "./Samples/ListViewBasic";
-import { TreeViewBasic } from "./Samples/TreeViewBasic";
-import { SplitViewSimple } from "./Samples/SplitViewSimple";
-import { TreeViewSimple } from "./Samples/TreeViewSimple";
-import { ListViewSimple } from "./Samples/ListViewSimple";
+import styled from "styled-components";
+import { StarRating } from "@jswf/react-star-rating";
 
-let key = 0;
-const Compornents: [() => JSX.Element, string, string][] = [
-  [WindowSimple, "WindowSimple", "Simple Window usage"],
-  [WindowBasic, "WindowBasic", "Basic Parameter Window usage"],
-  [WindowChild, "WindowChild", "Child Window usage"],
-  [SplitViewSimple, "SplitViewSimple", "Simple SplitBar usage"],
-  [SplitViewBasic, "SplitViewBasic", "SplitBar usage"],
-  [ListViewSimple, "ListViewSimple", "Simple ListView usage"],
-  [ListViewBasic, "ListViewBasic", "ListView usage"],
-  [TreeViewSimple, "TreeViewSimple", "Simple TreeView usage"],
-  [TreeViewBasic, "TreeViewBasic", "Basic TreeView usage"]
-];
-function CompornentList() {
-  let count = 0;
-  const [nodes, setNodes] = React.useState<ReactElement[]>([]);
-  const [src, setSrc] = React.useState("");
+const Root = styled.div`
+  &{
+    display: inline-block;
+    border: solid 1px;
+  }
+  > div {
+    display: flex;
+    > div {
+      width: 5em;
+      text-align: center;
+    }
+    > button {
+      width: 3em;
+    }
+  }
+`;
 
-  useEffect(() => {
-    getSrc(`../src/index.tsx`);
-  }, []);
+export function RatingTest() {
+  const [max, setMax] = useState(5);
+  const [value, setValue] = useState(2.5);
 
   return (
     <>
-      <JSWindow x={0} y={0} width={600} title="Sample list">
-        <ListView onItemClick={onItemClick}>
-          <ListHeaders>
-            <ListHeader type="number">No</ListHeader>
-            <ListHeader width={200}>Name</ListHeader>
-            <ListHeader>Info</ListHeader>
-          </ListHeaders>
-          {Compornents.map((c, index) => (
-            <ListRow key={index}>
-              <ListItem>{++count}</ListItem>
-              <ListItem>{c[1]}</ListItem>
-              <ListItem>{c[2]}</ListItem>
-            </ListRow>
-          ))}
-        </ListView>
-      </JSWindow>
-      {nodes}
-      <pre>{src}</pre>
+      <StarRating max={max} value={value} />
+      <StarRating max={max} value={value} star="▲" />
+      <StarRating
+        style={{ fontSize: "150%" }}
+        max={max}
+        value={value}
+        star="星"
+        backStyle={{ color: "black" }}
+        foreStyle={{ color: "red" }}
+        onValue={v => {
+          setValue(v);
+        }}
+      />
+      <Root>
+        <div>
+          <div>max</div>
+          <button onClick={() => {setMax(max - 2);}}>-2</button>
+          <button onClick={() => {setMax(max - 1);}}>-1</button>
+          <div>{max}</div>
+          <button onClick={() => {setMax(max + 1);}}>+1</button>
+          <button onClick={() => {setMax(max + 2);}}>+2</button>
+        </div>
+        <div>
+          <div>value</div>
+          <button onClick={() => {setValue(value - 1);}}>-1</button>
+          <button onClick={() => {setValue(value - 0.1);}}>-0.1</button>
+          <div>{value.toFixed(1)}</div>
+          <button onClick={() => {setValue(value + 0.1);}}>+0.1</button>
+          <button onClick={() => {setValue(value + 1);}}>+1</button>
+        </div>
+      </Root>
     </>
   );
-  function onItemClick(row: number, col: number) {
-    const newNodes = nodes.filter(node => {
-      return node.type !== Compornents[row][0];
-    });
-    newNodes.push(React.createElement(Compornents[row][0], { key: key++ }));
-    setNodes(newNodes.slice());
-    getSrc(`../src/Samples/${Compornents[row][1]}.tsx`);
-  }
-  function getSrc(path: string) {
-    const req = new XMLHttpRequest();
-    req.onreadystatechange = () => {
-      if (req.readyState == 4) {
-        if (req.status == 200) setSrc(req.responseText);
-        else setSrc(`Error:${req.readyState}`);
-      } else setSrc("downloading･･･");
-    };
-    req.open("GET", path);
-    req.send(null);
-  }
 }
 
-function App() {
-  return <CompornentList />;
-}
-ReactDOM.render(<App />, document.getElementById("root") as HTMLElement);
+ReactDOM.render(<RatingTest />, document.getElementById("root") as HTMLElement);

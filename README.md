@@ -1,125 +1,124 @@
-# @jswf/react
+# @jswf/react-star-rating
 
+Text-based rating that allows decimal numbers  
+![ScreenShot](https://raw.githubusercontent.com/JavaScript-WindowFramework/react-star-rating/screenshot/screenshot.gif)
 
-Virtual window component for React
+## １．Contents
 
-## １．内容
+### 1.1 Props
 
+```ts:
+interface Props {
+  style?: React.CSSProperties;       //Owner CSS
+  backStyle?: React.CSSProperties;   //Background Text CSS
+  foreStyle?: React.CSSProperties;   //Foreground Text CSS
+  star?: string;                     //Star charactor '★'
+  max: number;                       //Max Star value
+  value: number;                     //Current Star value
+  onValue?: (value: number) => void; //Change current value Event
+}
+```
 
-Components for realizing virtual windows with React
-Just enclose with JSWindow and it will become a virtual window
+### 1.2 Usage
 
-## ２．Screen Shot
+```ts:
+<StarRating max={5} value={2.5} />
+<StarRating max={10} value={3} star="▲" />
+<StarRating
+  style={{ fontSize: "150%" }}
+  max={max}
+  value={value}
+  star="星"
+  backStyle={{color:"black"}}
+  foreStyle={{color:"red"}}
+  onValue={v => {
+    setValue(v);
+  }}
+/>
+```
 
-![ScreenShot](https://raw.githubusercontent.com/JavaScript-WindowFramework/jwf-react-sample01/ScreenShot/ScreenShot.gif)
+## ２．links
+
+- Source code  
+[https://github.com/JavaScript-WindowFramework/react-star-rating](https://github.com/JavaScript-WindowFramework/react-star-rating)
+
+- Sample code  
+[https://github.com/JavaScript-WindowFramework/react-star-rating-sample](https://github.com/JavaScript-WindowFramework/react-star-rating-sample)
+
+- Operation sample  
+[https://javascript-windowframework.github.io/react-star-rating-sample/dist/](https://javascript-windowframework.github.io/react-star-rating-sample/dist/)
 
 ## ３．Sample source
 
-```index.tsx
-import * as React from "react";
+```tsx:index.tsx
+import React, { useState } from "react";
 import * as ReactDOM from "react-dom";
-import { JSWFWindow, WindowState, WindowStyle, WindowInfo } from "@jswf/react";
+import styled from "styled-components";
+import { StarRating } from "@jswf/react-star-rating";
 
-function App() {
-  const frame = React.createRef<JSWFWindow>();
-  const [info, setInfo] = React.useState<WindowInfo | null>(null);
+const Root = styled.div`
+  &{
+    display: inline-block;
+    border: solid 1px;
+  }
+  > div {
+    display: flex;
+    > div {
+      width: 5em;
+      text-align: center;
+    }
+    > button {
+      width: 3em;
+    }
+  }
+`;
+
+export function RatingTest() {
+  const [max, setMax] = useState(5);
+  const [value, setValue] = useState(2.5);
+
   return (
     <>
-      <JSWFWindow ref={frame} title="Window1" x={50} y={100}>
-        この中に入れたコンテンツは仮想ウインドウ上に表示されます
-      </JSWFWindow>
-
-      <JSWFWindow
-        title="Window2"
-        width={600}
-        height={500}
-        windowStyle={~WindowStyle.CLOSE}
-      >
-        ウインドウ位置を設定しなかった場合、中央に表示されます
-        <br />
-        windowStyleで使用する機能を設定できます
-        <JSWFWindow
-          title="ChildWindow"
-          overlapped={false}
-          width={200}
-          height={200}
-        >
-          overlappedをfalseにするとクライアント領域内に表示され、trueにすると重ね合わせだけ調整されます
-        </JSWFWindow>
-      </JSWFWindow>
-
-      <JSWFWindow title="更新テスト" y={50} onUpdate={p => setInfo(p)}>
-        <pre>{info && JSON.stringify(info,["realX","realY","realWidth","realHeight"],' ')}</pre>
-      </JSWFWindow>
-
-      <button
-        onClick={() => {
-          frame.current!.foreground();
-          frame.current!.setWindowState(WindowState.NORMAL);
+      <StarRating max={max} value={value} />
+      <StarRating max={max} value={value} star="▲" />
+      <StarRating
+        style={{ fontSize: "150%" }}
+        max={max}
+        value={value}
+        star="星"
+        backStyle={{ color: "black" }}
+        foreStyle={{ color: "red" }}
+        onValue={v => {
+          setValue(v);
         }}
-      >
-        Window1を復活させる
-      </button>
+      />
+      <Root>
+        <div>
+          <div>max</div>
+          <button onClick={() => {setMax(max - 2);}}>-2</button>
+          <button onClick={() => {setMax(max - 1);}}>-1</button>
+          <div>{max}</div>
+          <button onClick={() => {setMax(max + 1);}}>+1</button>
+          <button onClick={() => {setMax(max + 2);}}>+2</button>
+        </div>
+        <div>
+          <div>value</div>
+          <button onClick={() => {setValue(value - 1);}}>-1</button>
+          <button onClick={() => {setValue(value - 0.1);}}>-0.1</button>
+          <div>{value.toFixed(1)}</div>
+          <button onClick={() => {setValue(value + 0.1);}}>+0.1</button>
+          <button onClick={() => {setValue(value + 1);}}>+1</button>
+        </div>
+      </Root>
     </>
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("root") as HTMLElement);
+ReactDOM.render(<RatingTest />, document.getElementById("root") as HTMLElement);
+
+
 ```
 
-## ４．機能に関して
-
-### 4.1 現時点で使用可能な機能
-
-- ウインドウの移動
-- リサイズ
-- 最大化
-- 最小化
-- 重ね合わせ
-- 親子ウインドウ
-
-### 4.2 Propsパラメータ
-
-| Name        | Type               | Info                                                       |
-| ----------- | ------------------ | ---------------------------------------------------------- |
-| x           | number &#124; null | X Position                                                 |
-| y           | number &#124; null | Y Position                                                 |
-| width       | number             | Width                                                      |
-| height      | number             | Height                                                     |
-| moveable    | boolean            | trueだとクライアント領域のドラッグで移動                      |
-| borderSize  | number             | サイズ変更用の見えないフレームのサイズ                        |
-| titleSize   | number             | タイトルバーのサイズ                                         |
-| title       | string             | タイトル                                                    |
-| active      | boolean            | trueでアクティブ                                            |
-| overlapped  | boolean            | falseにするとウインドウが親ウインドウ内にのみ表示              |
-| windowStyle | number             | WindowStyle ビットの込み合わせ <br> TITLE:タイトルバー<br> MAX:最大化ボタン<br> MIN:最小化ボタン<br> CLOSE:クローズボタン<br> FRAME:枠の表示<br> RESIZE:サイズ変更<br> |
-| windowState | WindowState                    | WindowState　ウインドウの状態<br>  NORMAL:通常<br> MAX:最大化<br> MIN:最小化<br> HIDE:非表示<br> |
-| onUpdate    | function(p:WindowInfo)  &#124; null | ウインドウの状態が変化するとコールバックされる |
-
-### 4.3 メソッド
-
-- foreground()  
-ウインドウをフォアグラウンドにする
-
-- setWindowState(state: WindowState | undefined)  
-ウインドウの状態を変更する  
-  - state  
-WindowState.NORMAL  
-WindowState.MAX  
-WindowState.MIN  
-WindowState.HIDE  
-
-## ５．関連リンク
-
-- ソースコード  
-[https://github.com/JavaScript-WindowFramework/jswf-react](https://github.com/JavaScript-WindowFramework/jswf-react)
-
-- サンプルソース  
-[https://github.com/JavaScript-WindowFramework/jwf-react-sample01](https://github.com/JavaScript-WindowFramework/jwf-react-sample01)
-
-- 動作サンプル  
-[https://javascript-windowframework.github.io/jwf-react-sample01/dist/](https://javascript-windowframework.github.io/jwf-react-sample01/dist/)
-
-## ６．ライセンス
+## ５．license
 
 MIT
